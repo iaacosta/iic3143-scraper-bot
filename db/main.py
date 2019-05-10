@@ -8,11 +8,11 @@ def connect():
     return psycopg2.connect(DB_URL)
 
 
-def fetch_senadors(connection):
+def fetch_senadors(connection, selectors):
     cursor = connection.cursor()
-    cursor.execute('SELECT * FROM "Senadors";')
+    cursor.execute('SELECT {} FROM "Senadors";'.format(','.join(selectors)))
 
-    senadores = cursor.fetchall().copy()
+    senadores = list(map(lambda row: row[0], cursor.fetchall().copy()))
 
     cursor.close()
     return senadores
