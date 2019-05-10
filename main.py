@@ -25,8 +25,10 @@ class Bot:
 
         logger('Cambios detectados, scrapeando nueva información')
         nuevos = self.scrap_new_senadores(diff)
-        logger('Agregando {} senadores a la base de datos'.format(len(nuevos)))
+        logger('Agregando {} senador{} a la base de datos'.format(
+            len(nuevos), 'es' if len(nuevos) > 1 else ''))
         db.insert_senadores(self.connection, nuevos)
+        logger('Senadores agregados a la base de datos')
 
     @staticmethod
     def scrap_ids_senadores():

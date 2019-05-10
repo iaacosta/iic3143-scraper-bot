@@ -1,21 +1,10 @@
-from functools import reduce
 from requests import get
 from urllib.parse import urljoin, urlparse, parse_qs
 from bs4 import BeautifulSoup
+import helpers.main as helpers
 
 BASE = 'http://www.senado.cl'
 PATH = 'appsenado/index.php'
-
-
-def query_parser(query):
-    if type(query) == dict:
-        str_query = reduce(lambda accum, tuple: accum +
-                           '{}={}&'.format(*tuple), query.items(), '?')
-        return str_query[:-1]
-    elif type(query) == str:
-        queries = query.replace('?', '').split('&')
-        return dict(map(lambda query: (*query.split('='),), queries))
-    raise TypeError('query should be a dict or a string')
 
 
 def fetch_table_actuales():
@@ -24,7 +13,7 @@ def fetch_table_actuales():
         'ac': 'listado'
     }
 
-    main = get(urljoin(BASE, '{}{}'.format(PATH, query_parser(query))))
+    main = get(urljoin(BASE, '{}{}'.format(PATH, helpers.query_parser(query))))
     return BeautifulSoup(main.text, 'html.parser').find(class_='clase_tabla')
 
 
@@ -48,7 +37,7 @@ def fetch_detail(sid):
         'id': sid
     }
 
-    main = get(urljoin(BASE, '{}{}'.format(PATH, query_parser(query))))
+    main = get(urljoin(BASE, '{}{}'.format(PATH, helpers.query_parser(query))))
     soup = BeautifulSoup(main.text, 'html.parser')
 
     datos = soup.find(class_='datos').find_all('strong')
@@ -57,14 +46,14 @@ def fetch_detail(sid):
         filter(lambda dato: dato.text in valid_strong or dato.find('a'), datos))
 
     partido = datos[0].next_sibling.strip()
-    telefono = datos[1].next_sibling.strip()
+    telefono = helpers.process_phone_number(datos[1].next_sibling.strip())
     email = datos[2].next_sibling.strip()
     curriculum_uri = '{}{}'.format(BASE, datos[3].find('a')['href'])
 
     return {
-        'sid': sid,
-        'partido': partido,
-        'telefono': telefono,
+        'id': sid,
+        'partido_politico': partido,
         'email': email,
-        'curriculum_uri': curriculum_uri
+        'telefono': telefono,
+        'url_curriculum': curriculum_uri
     }

@@ -24,9 +24,11 @@ def insert_senadores(connection, senadores):
 
     for senador in senadores:
         data = map(lambda val: str(val) if type(val)
-                   == int else '"{}"'.format(val), senador.values())
-        cursor.execute('INSERT INTO "Senadors"({}) VALUES({})'.format(
-            ', '.join(columns), ', '.join(data)))
+                   == int else "'{}'".format(val), senador.values())
+        query = 'INSERT INTO "Senadors"({}) VALUES({})'.format(
+            ', '.join(columns), ', '.join(data))
+
+        cursor.execute(query)
 
     connection.commit()
     cursor.close()
