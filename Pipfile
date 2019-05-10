@@ -12,6 +12,7 @@ bs4 = "*"
 psycopg2 = "*"
 autopep8 = "*"
 rope = "*"
+requests = "*"
 
 [requires]
 python_version = "3.6"
