@@ -1,4 +1,5 @@
 import scraper.senadores as senadores
+import scraper.periodos as periodos
 import db.main as db
 from helpers.main import logger
 
@@ -26,8 +27,16 @@ class Bot:
         nuevos = self.scrap_new_senadores(diff)
         logger('Agregando {} senador{} a la base de datos'.format(
             len(nuevos), 'es' if len(nuevos) > 1 else ''))
-        db.insert_senadores(self.connection, nuevos)
+        db.insert(self.connection, 'Senadors', nuevos)
         logger('Senadores agregados a la base de datos')
+        self.agregar_periodos(map(lambda senador: senador['id'], nuevos))
+
+    def agregar_periodos(self, ids):
+        logger('Recolectando información de los periodos')
+        periodos_db = periodos.fetch_periodos(ids)
+        logger('Agregando periodos a la base de datos')
+        db.insert(self.connection, 'Periodos', periodos_db)
+        logger('Periodos agregados a la base de datos')
 
     @staticmethod
     def scrap_ids_senadores():

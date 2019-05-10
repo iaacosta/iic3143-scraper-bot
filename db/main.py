@@ -18,15 +18,15 @@ def fetch_senadores(connection, selectors):
     return senadores
 
 
-def insert_senadores(connection, senadores):
+def insert(connection, table_name, items):
     cursor = connection.cursor()
-    columns = senadores[0].keys()
+    columns = items[0].keys()
 
-    for senador in senadores:
+    for item in items:
         data = map(lambda val: str(val) if type(val)
-                   == int else "'{}'".format(val), senador.values())
-        query = 'INSERT INTO "Senadors"({}) VALUES({})'.format(
-            ', '.join(columns), ', '.join(data))
+                   == int else "'{}'".format(val), item.values())
+        query = 'INSERT INTO "{}"({}) VALUES({})'.format(
+            table_name, ', '.join(columns), ', '.join(data))
 
         cursor.execute(query)
 
