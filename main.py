@@ -18,7 +18,6 @@ class Bot:
         db_ids = set(db.fetch_senadores(self.connection, ['id']))
 
         diff = web_ids - db_ids
-        diff = diff.union(set([905]))
         if len(diff) == 0:
             logger('No hay cambios')
             return

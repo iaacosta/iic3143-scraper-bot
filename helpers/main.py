@@ -31,3 +31,12 @@ def query_parser(query):
         queries = query.replace('?', '').split('&')
         return dict(map(lambda query: (*query.split('='),), queries))
     raise TypeError('query should be a dict or a string')
+
+
+def parse_name(full_name):
+    splitted = full_name.split(',')
+    return {
+        'nombre': splitted[1].strip(),
+        'apellido_paterno': splitted[0].strip().split(' ')[0],
+        'apellido_materno': splitted[0].strip().split(' ')[1]
+    }
