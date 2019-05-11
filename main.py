@@ -2,6 +2,7 @@ import db
 import scraper.senadores as senadores
 import scraper.periodos as periodos
 from helpers import logger
+from datetime import datetime
 
 
 class Bot:
@@ -10,6 +11,7 @@ class Bot:
 
     def run(self):
         self.actualizar_senadores()
+        self.commit_actualizacion()
         self.connection.close()
 
     def actualizar_senadores(self):
@@ -37,6 +39,10 @@ class Bot:
         logger('Agregando periodos a la base de datos')
         db.insert(self.connection, 'Periodos', periodos_db)
         logger('Periodos agregados a la base de datos')
+
+    def commit_actualizacion(self):
+        db.insert(self.connection, 'Updates', [
+            {'"createdAt"': datetime.now()}])
 
     @staticmethod
     def scrap_ids_senadores():
