@@ -7,7 +7,7 @@ def logger(message):
     date = datetime.datetime.now()
     msg = '[{}] {}'.format(date.strftime('%d-%M-%Y %H:%m'), message)
     print(msg)
-    with open(path.join(path.dirname(__file__), '..', '.log'), 'w') as f:
+    with open(path.join(path.dirname(__file__), '..', '.log'), 'a') as f:
         f.write('{}\n'.format(msg))
     return msg
 
