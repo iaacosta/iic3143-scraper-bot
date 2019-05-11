@@ -1,11 +1,14 @@
 import datetime
+from os import path
 from functools import reduce
 
 
 def logger(message):
     date = datetime.datetime.now()
-    print('[{}] {}'.format(date.strftime('%d-%M-%Y %H:%m'), message))
-    return date
+    msg = '[{}] {}'.format(date.strftime('%d-%M-%Y %H:%m'), message)
+    with open(path.join(path.dirname(__file__), '..', '.log')) as f:
+        f.write('{}\n'.format(msg))
+    return msg
 
 
 def process_phone_number(phone_number):
