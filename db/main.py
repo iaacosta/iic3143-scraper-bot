@@ -10,9 +10,11 @@ def connect():
 
 def fetch_senadores(connection, selectors):
     cursor = connection.cursor()
-    cursor.execute('SELECT {} FROM "Senadors";'.format(','.join(selectors)))
+    cursor.execute('SELECT {} FROM "Senadors";'.format(', '.join(selectors)))
 
-    senadores = list(map(lambda row: row[0], cursor.fetchall().copy()))
+    senadores = cursor.fetchall().copy()
+    if len(selectors) == 1:
+        senadores = list(map(lambda senador: senador[0], senadores))
 
     cursor.close()
     return senadores
