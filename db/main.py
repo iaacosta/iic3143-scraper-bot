@@ -1,11 +1,9 @@
 from os import environ
 import psycopg2
 
-DB_URL = environ['DATABASE_URL']
-
 
 def connect():
-    return psycopg2.connect(DB_URL)
+    return psycopg2.connect(environ['DATABASE_URL'])
 
 
 def fetch_senadores(connection, selectors):

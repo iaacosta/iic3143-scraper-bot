@@ -1,7 +1,7 @@
+import db
 import scraper.senadores as senadores
 import scraper.periodos as periodos
-import db.main as db
-from helpers.main import logger
+from helpers import logger
 
 
 class Bot:
