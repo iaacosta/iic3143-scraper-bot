@@ -25,10 +25,20 @@ class TestProcessPhoneNumer(TestCase):
 
 
 class TestQueryParser(TestCase):
-    def test_normal_query(self):
-        query = {'query1': 'value1',
-                 'query2': 'value2'}
-        self.assertEqual('?query1=value1&query2=value2', query_parser(query))
+    def test_dict_query(self):
+        dict_query = {'query1': 'value1',
+                      'query2': 'value2'}
+        self.assertEqual('?query1=value1&query2=value2',
+                         query_parser(dict_query))
+
+    def test_string_query(self):
+        str_query = '?query1=value1&query2=value2'
+        expected_value = {'query1': 'value1',
+                          'query2': 'value2'}
+        self.assertEqual(expected_value, query_parser(str_query))
+
+    def test_no_string_or_dict_query(self):
+        self.assertRaises(TypeError, query_parser, 0)
 
 
 class TestParseName(TestCase):
@@ -38,6 +48,16 @@ class TestParseName(TestCase):
                            'apellido_paterno': 'Smith',
                            'apellido_materno': 'Doe'}
         self.assertEqual(expected_result, parse_name(name))
+
+
+class TestSQLValueParser(TestCase):
+    def test_string_value(self):
+        value = 'John Doe'
+        self.assertEqual("'John Doe'", sql_value_parser(value))
+
+    def test_number_value(self):
+        value = 0
+        self.assertEqual('0', sql_value_parser(value))
 
 
 if __name__ == "__main__":
