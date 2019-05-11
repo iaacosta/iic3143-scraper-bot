@@ -24,6 +24,13 @@ class TestProcessPhoneNumer(TestCase):
         self.assertEqual(number, process_phone_number(number))
 
 
+class TestQueryParser(TestCase):
+    def test_normal_query(self):
+        query = {'query1': 'value1',
+                 'query2': 'value2'}
+        self.assertEqual('?query1=value1&query2=value2', query_parser(query))
+
+
 class TestParseName(TestCase):
     def test_well_formatted_name(self):
         name = 'Smith Doe, John'
@@ -31,3 +38,7 @@ class TestParseName(TestCase):
                            'apellido_paterno': 'Smith',
                            'apellido_materno': 'Doe'}
         self.assertEqual(expected_result, parse_name(name))
+
+
+if __name__ == "__main__":
+    main()
