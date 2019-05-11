@@ -1,4 +1,5 @@
 from os import environ
+from helpers import sql_value_parser
 import psycopg2
 
 
@@ -22,13 +23,14 @@ def insert(connection, table_name, items):
     cursor = connection.cursor()
     columns = items[0].keys()
 
+    query = 'INSERT INTO "{}"({}) VALUES'.format(
+        table_name, ', '.join(columns))
+    values = []
+
     for item in items:
-        data = map(lambda val: str(val) if type(val)
-                   == int else "'{}'".format(val), item.values())
-        query = 'INSERT INTO "{}"({}) VALUES({})'.format(
-            table_name, ', '.join(columns), ', '.join(data))
+        data = map(sql_value_parser, item.values())
+        values.append('({})'.format(', '.join(data)))
 
-        cursor.execute(query)
-
+    cursor.execute('{} {};'.format(query, ', '.join(values)))
     connection.commit()
     cursor.close()

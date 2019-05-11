@@ -55,7 +55,14 @@ class TestFetchSenadores(TestCase):
 
 
 class TestInsert(TestCase):
-    pass
+    def test_with_one_value(self):
+        connection = connect()
+        insert(connection, 'TestTable', [{'id': 0, 'name': 'Test name 0'}])
+
+        cursor = connection.cursor.return_value
+        cursor.execute.assert_called_with(
+            'INSERT INTO "TestTable"(id, name) VALUES (0, \'Test name 0\');')
+        cursor.execute.assert_called_once()
 
 
 if __name__ == "__main__":

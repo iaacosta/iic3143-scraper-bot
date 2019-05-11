@@ -40,3 +40,7 @@ def parse_name(full_name):
         'apellido_paterno': splitted[0].strip().split(' ')[0],
         'apellido_materno': splitted[0].strip().split(' ')[1]
     }
+
+
+def sql_value_parser(val):
+    return str(val) if type(val) == int else "'{}'".format(val)
