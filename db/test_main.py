@@ -56,13 +56,28 @@ class TestFetchSenadores(TestCase):
 
 class TestInsert(TestCase):
     def test_with_one_value(self):
-        connection = connect()
+        connection = MockConector(test_env)
         insert(connection, 'TestTable', [{'id': 0, 'name': 'Test name 0'}])
-
         cursor = connection.cursor.return_value
         cursor.execute.assert_called_with(
             'INSERT INTO "TestTable"(id, name) VALUES (0, \'Test name 0\');')
         cursor.execute.assert_called_once()
+
+    def test_with_multiple_values(self):
+        connection = MockConector(test_env)
+        insert(connection, 'TestTable', [
+               {'id': 0, 'name': 'Test name 0'}, {'id': 1, 'name': 'Test name 1'}])
+        cursor = connection.cursor.return_value
+        cursor.execute.assert_called_with(
+            'INSERT INTO "TestTable"(id, name) VALUES (0, \'Test name 0\'), (1, \'Test name 1\');')
+        cursor.execute.assert_called_once()
+
+    def test_should_commit_and_close(self):
+        connection = MockConector(test_env)
+        insert(connection, 'TestTable', [{'id': 0, 'name': 'Test name 0'}])
+        cursor = connection.cursor.return_value
+        connection.commit.assert_called_once()
+        cursor.close.assert_called_once()
 
 
 if __name__ == "__main__":

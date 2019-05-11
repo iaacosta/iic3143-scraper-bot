@@ -12,3 +12,4 @@ class MockConector:
     def __init__(self, url):
         self.cursor = MagicMock(return_value=MockCursor())
         self.close = MagicMock()
+        self.commit = MagicMock()
