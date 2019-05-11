@@ -22,3 +22,12 @@ class TestProcessPhoneNumer(TestCase):
     def test_already_formatted_number(self):
         number = '+56321234567'
         self.assertEqual(number, process_phone_number(number))
+
+
+class TestParseName(TestCase):
+    def test_well_formatted_name(self):
+        name = 'Smith Doe, John'
+        expected_result = {'nombre': 'John',
+                           'apellido_paterno': 'Smith',
+                           'apellido_materno': 'Doe'}
+        self.assertEqual(expected_result, parse_name(name))
