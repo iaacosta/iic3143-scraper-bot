@@ -5,7 +5,7 @@ from functools import reduce
 
 def logger(message):
     date = datetime.datetime.now()
-    msg = '[{}] {}'.format(date.strftime('%d-%m-%Y %H:%M'), message)
+    msg = '[{} UTC] {}'.format(date.strftime('%d-%m-%Y %H:%M'), message)
     print(msg)
     with open(path.join(path.dirname(__file__), '..', '.log'), 'a') as f:
         f.write('{}\n'.format(msg))
