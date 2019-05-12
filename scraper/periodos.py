@@ -1,6 +1,6 @@
-from requests import get
 from urllib.parse import urljoin, urlparse, parse_qs
 from bs4 import BeautifulSoup
+import requests
 import re
 import helpers.main as helpers
 
@@ -10,7 +10,7 @@ PATH = 'appsenado/index.php'
 
 def fetch_periodos(ids):
     index_query = {'mo': 'senadores', 'ac': 'periodos'}
-    index = get(urljoin(BASE, '{}{}'.format(
+    index = requests.get(urljoin(BASE, '{}{}'.format(
         PATH, helpers.query_parser(index_query))))
     index_soup = BeautifulSoup(index.text, 'html.parser')
 
@@ -30,8 +30,8 @@ def fetch_periodos(ids):
             database_data.append({
                 'sid': _id,
                 'cargo': cargo,
-                'inicio': inicio,
-                'final': final,
+                'inicio': int(inicio),
+                'final': int(final),
             })
 
     return database_data

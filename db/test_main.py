@@ -1,5 +1,5 @@
 from os import environ
-from helpers import MockConector, MockCursor
+from test_helpers import MockConector, MockCursor
 from unittest import TestCase, main
 from unittest.mock import MagicMock
 from os import environ

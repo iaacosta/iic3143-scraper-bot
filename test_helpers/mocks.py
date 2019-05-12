@@ -13,3 +13,8 @@ class MockConector:
         self.cursor = MagicMock(return_value=MockCursor())
         self.close = MagicMock()
         self.commit = MagicMock()
+
+
+class MockResponse:
+    def __init__(self, html):
+        self.text = html
