@@ -1,4 +1,4 @@
-from requests import get
+import requests
 from urllib.parse import urljoin, urlparse, parse_qs
 from bs4 import BeautifulSoup
 import re
@@ -14,7 +14,8 @@ def fetch_table_actuales():
         'ac': 'listado'
     }
 
-    main = get(urljoin(BASE, '{}{}'.format(PATH, helpers.query_parser(query))))
+    main = requests.get(
+        urljoin(BASE, '{}{}'.format(PATH, helpers.query_parser(query))))
     return BeautifulSoup(main.text, 'html.parser').find(class_='clase_tabla')
 
 
@@ -33,12 +34,12 @@ def fetch_ids(table):
 
 def fetch_detail(sid):
     index_query = {'mo': 'senadores', 'ac': 'periodos'}
-    index = get(urljoin(BASE, '{}{}'.format(
+    index = requests.get(urljoin(BASE, '{}{}'.format(
         PATH, helpers.query_parser(index_query))))
     index_soup = BeautifulSoup(index.text, 'html.parser')
 
     detail_query = {'mo': 'senadores', 'ac': 'fichasenador', 'id': sid}
-    detail = get(urljoin(BASE, '{}{}'.format(
+    detail = requests.get(urljoin(BASE, '{}{}'.format(
         PATH, helpers.query_parser(detail_query))))
     detail_soup = BeautifulSoup(detail.text, 'html.parser')
 

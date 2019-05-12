@@ -1,28 +1,39 @@
 from unittest import main, TestCase
-from unittest.mock import MagicMock
-from test_helpers import html_periodos, MockResponse
-from scraper import fetch_periodos, requests, BeautifulSoup
+from unittest.mock import create_autospec
+from test_helpers import html_senadores_actuales, html_senador_perfil, html_senadores_index, MockResponse
+from scraper import fetch_ids, fetch_detail, requests, BeautifulSoup
 
 
-class FetchPeriodos(TestCase):
-    def test_one_senator(self):
-        requests.get = MagicMock(return_value=MockResponse(html_periodos))
-        periodos = fetch_periodos([905])
-        expected_value = [
-            {'sid': 905, 'cargo': 'senador', 'inicio': 2014, 'final': 2022}]
+def mock_response(url):
+    if 'ac=periodos' in url:
+        return MockResponse(html_senadores_index)
+    return MockResponse(html_senador_perfil)
+
+
+class TestFetchIds(TestCase):
+    def test_default(self):
+        periodos = fetch_ids(BeautifulSoup(
+            html_senadores_actuales, 'html.parser'))
+        expected_value = [905, 985, 1221]
         self.assertListEqual(expected_value, periodos)
 
-    def test_multiple_senators(self):
-        requests.get = MagicMock(return_value=MockResponse(html_periodos))
-        periodos = fetch_periodos([905, 985, 1221])
-        expected_values = [
-            {'sid': 905, 'cargo': 'senador', 'inicio': 2014, 'final': 2022},
-            {'sid': 985, 'cargo': 'senador', 'inicio': 2018, 'final': 2026},
-            {'sid': 1221, 'cargo': 'diputado', 'inicio': 2010, 'final': 2018},
-            {'sid': 1221, 'cargo': 'senador', 'inicio': 2018, 'final': 2026}
-        ]
-        for value in expected_values:
-            self.assertIn(value, periodos)
+
+class TestFetchDetail(TestCase):
+    def test_default(self):
+        requests.get = mock_response
+        detalle = fetch_detail(905)
+        expected_response = {
+            'id': 905,
+            'partido_politico': 'R.N.',
+            'email': 'allamand@senado.cl',
+            'telefono': '+56322504701',
+            'url_curriculum': 'http://www.senado.cl/curriculum-senador-andres-allamand-zavala/senado/2014-03-10/171943.html',
+            'url_foto': 'http://www.senado.cl/appsenado/index.php?mo=senadores&ac=getFoto&id=905&tipo=1',
+            'nombre': 'Andrés',
+            'apellido_paterno': 'Allamand',
+            'apellido_materno': 'Zavala'
+        }
+        self.assertEqual(expected_response, detalle)
 
 
 if __name__ == "__main__":
