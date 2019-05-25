@@ -3,7 +3,7 @@ from test_helpers import MockConector, MockCursor
 from unittest import TestCase, main
 from unittest.mock import MagicMock
 from os import environ
-from db import insert, connect, fetch_senadores, psycopg2
+from db import insert, connect, select, psycopg2
 
 psycopg2.connect = MagicMock()
 
@@ -21,14 +21,14 @@ class TestConnect(TestCase):
 class TestFetchSenadores(TestCase):
     def test_should_call_cursor_and_methods(self):
         connection = MockConector(test_env)
-        fetch_senadores(connection, ['test_selector_1'])
+        select(connection, ['test_selector_1'])
         connection.cursor.assert_called_once()
 
     def test_with_one_attr(self):
         connection = MockConector(test_env)
 
-        return_val = fetch_senadores(connection,
-                                     ['test_selector_1'])
+        return_val = select(connection,
+                            ['test_selector_1'])
         self.assertEqual(return_val, ['M'])
 
         cursor = connection.cursor.return_value
@@ -41,8 +41,8 @@ class TestFetchSenadores(TestCase):
     def test_with_multiple_attr(self):
         connection = MockConector(test_env)
 
-        return_val = fetch_senadores(connection,
-                                     ['test_selector_1', 'test_selector_2'])
+        return_val = select(connection,
+                            ['test_selector_1', 'test_selector_2'])
 
         self.assertEqual(return_val, ['MockCursorReturn'])
 

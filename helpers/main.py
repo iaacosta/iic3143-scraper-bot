@@ -48,3 +48,21 @@ def parse_name(full_name):
 
 def sql_value_parser(val):
     return str(val) if type(val) == int else "'{}'".format(val)
+
+
+def parse_estado(estado):
+    if ('publicado' in estado.lower()):
+        return 'aprobado'
+
+    parser = {
+        'En tramitación': 'tramitacion',
+        'Archivado': 'suspendido',
+        'Retirado': 'rechazado',
+        'Rechazado': 'rechazado',
+        'Consulta archivo': 'suspendido',
+        'Solicitud archivo': 'suspendido',
+        'Inconstitucional': 'rechazado',
+        'Inadmisible': 'rechazado'
+    }
+
+    return parser[estado]

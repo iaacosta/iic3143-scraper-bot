@@ -9,7 +9,7 @@ class TestBot(TestCase):
         self.bot = Bot()
         self.bot.connection.close = MagicMock()
         db.insert = MagicMock()
-        db.fetch_senadores = MagicMock(return_value=[905])
+        db.select = MagicMock(return_value=[905])
         senadores.fetch_ids = MagicMock(return_value=[905])
         senadores.fetch_detail = MagicMock(return_value='senador')
         periodos.fetch_periodos = MagicMock(return_value='periodos')
