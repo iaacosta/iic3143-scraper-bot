@@ -39,7 +39,6 @@ class Bot:
         logger('Verificando cambios en proyectos de ley')
 
         web_data = proyectos.fetch_new_proyectos()
-
         db_ids = set(db.select(self.connection, ['boletin'], 'Proyectos'))
         web_ids = set(map(lambda proy: proy['boletin'], web_data))
 
@@ -48,7 +47,7 @@ class Bot:
             logger('No hay cambios')
             return
 
-        new_data = filter(lambda proy: proy['boletin'] in diff, web_data)
+        new_data = list(filter(lambda proy: proy['boletin'] in diff, web_data))
         logger('Cambios detectados, scrapeando nueva información')
         nuevos = self.scrap_new_proyectos(new_data)
 
