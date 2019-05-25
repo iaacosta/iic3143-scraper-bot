@@ -11,9 +11,9 @@ class Bot:
         self.connection = db.connect()
 
     def run(self):
-        # self.actualizar_senadores()
+        self.actualizar_senadores()
         self.actualizar_proyectos()
-        # self.commit_actualizacion()
+        self.commit_actualizacion()
         self.connection.close()
 
     def actualizar_senadores(self):

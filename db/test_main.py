@@ -18,22 +18,22 @@ class TestConnect(TestCase):
         psycopg2.connect.assert_called_with(test_env)
 
 
-class TestFetchSenadores(TestCase):
+class TestSelect(TestCase):
     def test_should_call_cursor_and_methods(self):
         connection = MockConector(test_env)
-        select(connection, ['test_selector_1'])
+        select(connection, ['test_selector_1'], 'test_table')
         connection.cursor.assert_called_once()
 
     def test_with_one_attr(self):
         connection = MockConector(test_env)
 
         return_val = select(connection,
-                            ['test_selector_1'])
+                            ['test_selector_1'], 'test_table')
         self.assertEqual(return_val, ['M'])
 
         cursor = connection.cursor.return_value
         cursor.execute.assert_called_with(
-            'SELECT test_selector_1 FROM "Senadors";')
+            'SELECT test_selector_1 FROM "test_table";')
         cursor.execute.assert_called_once()
         cursor.fetchall.assert_called_once()
         cursor.close.assert_called_once()
@@ -42,13 +42,13 @@ class TestFetchSenadores(TestCase):
         connection = MockConector(test_env)
 
         return_val = select(connection,
-                            ['test_selector_1', 'test_selector_2'])
+                            ['test_selector_1', 'test_selector_2'], 'test_table')
 
         self.assertEqual(return_val, ['MockCursorReturn'])
 
         cursor = connection.cursor.return_value
         cursor.execute.assert_called_with(
-            'SELECT test_selector_1, test_selector_2 FROM "Senadors";')
+            'SELECT test_selector_1, test_selector_2 FROM "test_table";')
         cursor.execute.assert_called_once()
         cursor.fetchall.assert_called_once()
         cursor.close.assert_called_once()

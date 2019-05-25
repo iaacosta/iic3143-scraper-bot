@@ -148,3 +148,83 @@ html_senador_perfil = """
   </div>
 </section>
 """
+
+
+html_proyectos = """
+<div class="gridbox_light">
+  <div class="table-responsive">
+    <table width="100%" align="center" class="dhtmlxGrid" name="grid_nivel2" id="grid_nivel2" multiline="true"
+      oninit="myfunc_grid_nivel2()" imgpath="/appsenado/includes/dhtmlx_v36/dhtmlxGrid/codebase/imgs/" border="1">
+      <tbody>
+        <tr>
+          <td align="center" type="ro" sort="str">Fecha</td>
+          <td align="center" type="ro" sort="str">N° Boletín</td>
+          <td type="ro" sort="str">Título</td>
+          <td type="ro" sort="str">Estado</td>
+          <td width="0px" type="ro" sort="na">Fecha_sort</td>
+          <td width="0px" type="ro" sort="na">bol oculto</td>
+        </tr>
+
+        <tr>
+          <td>07/05/2003</td>
+          <td><a href="#" onclick="datos('3235-13')">3235-13</a></td>
+          <td>Modifica el Código del Trabajo, en lo relativo a la admisión al empleo de los menores de edad y al
+            cumplimiento de la obligación escolar.</td>
+          <td>Publicado: Ley Nº 20.189</td>
+          <td>2003/05/07</td>
+          <td>3235-13</td>
+        </tr>
+
+        <tr>
+          <td>06/05/2003</td>
+          <td><a href="#" onclick="datos('3232-07')">3232-07</a></td>
+          <td>Proyecto de ley que modifica el Código Civil y la Ley general de Bancos, en materia de cancelación de
+            hipotecas</td>
+          <td>En tramitación</td>
+          <td>2003/05/06</td>
+          <td>3232-07</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="table-responsive">
+    <table width="100%" align="center">
+      <tbody>
+        <tr>
+          <td id="pagingArea" style="height: 30px;"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+"""
+
+
+html_no_proyectos = """
+<div class="gridbox_light">
+  <div class="table-responsive">
+    <table width="100%" align="center" class="dhtmlxGrid" name="grid_nivel2" id="grid_nivel2" multiline="true"
+      oninit="myfunc_grid_nivel2()" imgpath="/appsenado/includes/dhtmlx_v36/dhtmlxGrid/codebase/imgs/" border="1">
+      <tbody>
+        <tr>
+          <td align="center" type="ro" sort="str">Fecha</td>
+          <td align="center" type="ro" sort="str">N° Boletín</td>
+          <td type="ro" sort="str">Título</td>
+          <td type="ro" sort="str">Estado</td>
+          <td width="0px" type="ro" sort="na">Fecha_sort</td>
+          <td width="0px" type="ro" sort="na">bol oculto</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="table-responsive">
+    <table width="100%" align="center">
+      <tbody>
+        <tr>
+          <td id="pagingArea" style="height: 30px;"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+"""

@@ -18,16 +18,15 @@ def fetch_new_proyectos():
         'mo': 'tramitacion',
         'ac': 'avanzada_resultado',
         'cadena': '0~S~1~0~{}~{}~~~0~0~~~~'.format(
-            '1/5/2019',
-            '10/5/2019',
-            # yesterday.strftime('%d/%m/%Y'),
-            # today.strftime('%d/%m/%Y'),
+            yesterday.strftime('%d/%m/%Y'),
+            today.strftime('%d/%m/%Y'),
         )
     }
 
     main = requests.get(
         urljoin(BASE, '{}{}'.format(PATH, helpers.query_parser(query))))
     soup = BeautifulSoup(main.text, 'html.parser')
+
     data = []
 
     rows = soup.find_all('tr')[1:-1]
