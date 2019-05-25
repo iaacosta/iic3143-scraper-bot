@@ -54,7 +54,7 @@ class Bot:
 
         logger('Agregando {} proyecto{} a la base de datos'.format(
             len(nuevos), 's' if len(nuevos) > 1 else ''))
-        # db.insert(self.connection, 'Proyectos', nuevos)
+        db.insert(self.connection, 'Proyectos', nuevos)
 
         logger('Proyectos agregados a la base de datos')
         self.agregar_senadores_autores(map(lambda proy: proy['id'], nuevos))
@@ -67,8 +67,14 @@ class Bot:
         logger('Periodos agregados a la base de datos')
 
     def agregar_senadores_autores(self, pids):
+        logger('Scrapeando autores de nuevos proyectos')
+        autores = []
         for pid in pids:
-            proyectos.fetch_autores(pid)
+            logger('\tpid={}'.format(pid))
+            autores += proyectos.fetch_autores(pid)
+        logger('Agregando {} autor{} a la base de datos'.format(
+            len(autores), 'es' if len(autores) > 1 else ''))
+        db.insert(self.connection, 'SenadorProyectos', autores)
 
     def commit_actualizacion(self):
         db.insert(self.connection, 'Updates', [

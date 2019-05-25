@@ -18,8 +18,8 @@ def fetch_new_proyectos():
         'mo': 'tramitacion',
         'ac': 'avanzada_resultado',
         'cadena': '0~S~1~0~{}~{}~~~0~0~~~~'.format(
-            '1/3/2019',
-            '25/5/2019',
+            '1/5/2019',
+            '10/5/2019',
             # yesterday.strftime('%d/%m/%Y'),
             # today.strftime('%d/%m/%Y'),
         )
@@ -86,6 +86,18 @@ def fetch_autores(pid):
     soup = BeautifulSoup(main.text, 'html.parser')
 
     info_table = soup.find('table')
-
+    autores = []
     for row in info_table.find_all('tr')[1:]:
-        print(row)
+        info = row.find_all('td')
+        sid = info[0].text.strip()
+        cargo = info[2].text.strip()
+
+        if cargo != 'S':
+            continue
+
+        autores.append({
+            'pid': pid,
+            'sid': int(sid)
+        })
+
+    return autores
