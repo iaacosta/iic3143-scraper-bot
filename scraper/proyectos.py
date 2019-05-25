@@ -65,8 +65,8 @@ def fetch_resumen(proyecto):
 
     info_table = soup.find_all('table')[1]
 
-    proyecto['resumen'] = info_table.find_all(
-        'tr')[0].find_all('td')[1].text.strip()
+    proyecto['resumen'] = re.sub(' +', ' ', info_table.find_all('tr')
+                                 [0].find_all('td')[1].text.replace('\n', '').strip())
 
     proyecto['url'] = 'http://www.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini={}'.format(
         proyecto['boletin']

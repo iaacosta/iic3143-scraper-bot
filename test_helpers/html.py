@@ -228,3 +228,148 @@ html_no_proyectos = """
   </div>
 </div>
 """
+
+html_proyecto = """
+<script language="JavaScript" type="text/javascript">
+proyid=10426;
+</script>
+<div id="div_contenido" style="display: block;">
+  <table width="100%">
+    <tbody>
+      <tr>
+        <td width="500" colspan="8">
+          <h1>Boletín 10002-07</h1>
+        </td>
+        <td id="td0" align="right" valign="middle">
+          <button name="btnVolver_datos_proy" id="btnVolver_datos_proy" onclick="volver_boletin()" type="button"
+            class="btn btn-primary glyphicon glyphicon-chevron-left">
+            Volver
+          </button>
+          <button name="btnVolver_datos_proy2" id="btnVolver_datos_proy2" onclick="volver_boletin()" type="button"
+            class="btn btn-primary glyphicon glyphicon-chevron-left">
+            Inicio
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="box_1a" id="div_box">
+    <table width="720" border="0" class="table-datos">
+      <tbody>
+        <tr>
+          <td class="subtitu backgris" align="right">Título:</td>
+          <td colspan="3" class="backgris">
+            Modifica la ley N° 19.733, sobre Libertades de Opinión e Información y
+            Ejercicio del Periodismo, para proteger el derecho a la imagen, a la vida
+            privada y a la honra de los niños, niñas y adolescentes
+          </td>
+        </tr>
+        <tr>
+          <td width="15%" class="subtitu" align="right">Fecha de Ingreso:</td>
+          <td width="35%">Jueves 16 de Abril, 2015</td>
+          <td width="15%" class="subtitu" align="right">Urgencia Actual:</td>
+          <td width="35%">Sin urgencia</td>
+        </tr>
+        <tr>
+          <td class="subtitu" align="right">Cámara de Origen:</td>
+          <td>C.Diputados</td>
+          <td class="subtitu" align="right">Iniciativa:</td>
+          <td>Moción</td>
+        </tr>
+        <tr>
+          <td class="subtitu" align="right">Tipo de Proyecto:</td>
+          <td>Proyecto de ley</td>
+          <td class="subtitu" align="right">Refundido:</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td class="subtitu" align="right">Etapa:</td>
+          <td><strong>Primer trámite constitucional</strong> (C.Diputados)</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td class="subtitu" align="right"></td>
+          <td>
+            <strong>Primer informe de comisión de Constitución, Legislación, Justicia y
+              Reglamento</strong>
+          </td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td class="subtitu" align="right">Link para compartir:</td>
+          <td colspan="3">
+            http://www.senado.cl/appsenado/templates/tramitacion/index.php?boletin_ini=10002-07
+          </td>
+        </tr>
+        <tr id="tr_prioritario" style="visibility: hidden">
+          <td class="subtitu" align="right">Proyecto prioritario:</td>
+          <td colspan="3">
+            <a class="link_prio"
+              href="/appsenado/index.php?mo=tramitacion&amp;ac=getDocto&amp;iddocto=12056&amp;tipodoc=mensaje_mocion">Mensaje</a>&nbsp;&nbsp;&nbsp;
+            <a class="link_prio"
+              href="/appsenado/index.php?mo=tramitacion&amp;ac=getDocto&amp;iddocto=20437&amp;tipodoc=info">Informe
+              Comisión de Vivienda y Urbanismo</a>&nbsp;&nbsp;&nbsp;
+            <a class="link_prio"
+              href="/appsenado/index.php?mo=tramitacion&amp;ac=getDocto&amp;iddocto=4565&amp;tipodoc=docto_comision">Informe
+              Técnico BCN</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+"""
+
+
+html_autores = """
+<div class="modal-content">
+  <div class="modal-body">
+    <div class="container" style="alignment-adjust: central;text-align: center;">
+      <h5 class="text-center" id="desc"></h5>
+      <div class="gridbox_light">
+        <div class="table-responsive">
+          <table width="100%" align="center" class="dhtmlxGrid" name="grid_aut" id="grid_aut" multiline="true"
+            oninit="myfunc_grid_aut()" imgpath="/appsenado/includes/dhtmlx_v26/dhtmlxGrid/codebase/imgs/" border="1">
+            <tbody>
+              <tr>
+                <td width="0px" align="left" type="ro" sort="na">parlid</td>
+                <td align="left" type="ro" sort="str">Autor</td>
+                <td width="0" align="left" type="ro" sort="na">CAMARA</td>
+                <td width="0" align="left" type="ro" sort="na">GENERO</td>
+              </tr>
+              <tr>
+                <td>905</td>
+                <td>Allamand Zavala, Andrés</td>
+                <td>S</td>
+                <td>M</td>
+              </tr>
+              <tr>
+                <td>1115</td>
+                <td>De Urresti Longton, Alfonso</td>
+                <td>S</td>
+                <td>M</td>
+              </tr>
+              <tr>
+                <td>830</td>
+                <td>Vallejo Dowling, Camila</td>
+                <td>D</td>
+                <td>F</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <table width="100%">
+          <tbody>
+            <tr>
+              <td id="pagingArea1" style="height: 30px;"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+"""
