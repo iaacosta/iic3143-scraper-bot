@@ -1,18 +1,36 @@
 from os import environ
+from helpers import sql_value_parser
 import psycopg2
-
-DB_URL = environ['DATABASE_URL']
 
 
 def connect():
-    return psycopg2.connect(DB_URL)
+    return psycopg2.connect(environ['DATABASE_URL'])
 
 
-def fetch_senadors(connection):
+def fetch_senadores(connection, selectors):
     cursor = connection.cursor()
-    cursor.execute('SELECT * FROM "Senadors";')
+    cursor.execute('SELECT {} FROM "Senadors";'.format(', '.join(selectors)))
 
     senadores = cursor.fetchall().copy()
+    if len(selectors) == 1:
+        senadores = list(map(lambda senador: senador[0], senadores))
 
     cursor.close()
     return senadores
+
+
+def insert(connection, table_name, items):
+    cursor = connection.cursor()
+    columns = items[0].keys()
+
+    query = 'INSERT INTO "{}"({}) VALUES'.format(
+        table_name, ', '.join(columns))
+    values = []
+
+    for item in items:
+        data = map(sql_value_parser, item.values())
+        values.append('({})'.format(', '.join(data)))
+
+    cursor.execute('{} {};'.format(query, ', '.join(values)))
+    connection.commit()
+    cursor.close()

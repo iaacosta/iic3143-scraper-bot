@@ -12,6 +12,9 @@ bs4 = "*"
 psycopg2 = "*"
 autopep8 = "*"
 rope = "*"
+requests = "*"
+nose = "*"
+nose-watch = "*"
 
 [requires]
 python_version = "3.6"
