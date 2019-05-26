@@ -2,7 +2,7 @@ from unittest import main, TestCase
 from unittest.mock import MagicMock
 from datetime import datetime, timedelta
 from test_helpers import html_proyectos, html_no_proyectos, html_proyecto, html_autores, MockResponse
-from scraper import fetch_new_proyectos, fetch_resumen, fetch_autores, requests
+from scraper.proyectos import fetch_new_proyectos, fetch_resumen, fetch_autores, requests
 
 
 class FetchNewPeriodos(TestCase):

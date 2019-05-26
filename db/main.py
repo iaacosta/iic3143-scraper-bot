@@ -7,10 +7,10 @@ def connect():
     return psycopg2.connect(environ['DATABASE_URL'])
 
 
-def select(connection, selectors, table_name):
+def select(connection, selectors, table_name, condition=''):
     cursor = connection.cursor()
-    cursor.execute('SELECT {} FROM "{}";'.format(
-        ', '.join(selectors), table_name))
+    cursor.execute('SELECT {} FROM "{}"{};'.format(
+        ', '.join(selectors), table_name, condition))
 
     senadores = cursor.fetchall().copy()
     if len(selectors) == 1:

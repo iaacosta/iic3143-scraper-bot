@@ -1,7 +1,7 @@
 from unittest import main, TestCase
 from unittest.mock import create_autospec
 from test_helpers import html_senadores_actuales, html_senador_perfil, html_senadores_index, MockResponse
-from scraper import fetch_ids, fetch_detail, requests, BeautifulSoup
+from scraper.senadores import fetch_ids, fetch_detail, requests, BeautifulSoup
 
 
 def mock_response(url):

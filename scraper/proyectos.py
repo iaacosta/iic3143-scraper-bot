@@ -12,7 +12,7 @@ PATH = 'appsenado/index.php'
 
 def fetch_new_proyectos():
     today = datetime.now().date()
-    yesterday = (datetime.now() - timedelta(days=1)).date()
+    yesterday = (datetime.now() - timedelta(days=4)).date()
 
     query = {
         'mo': 'tramitacion',

@@ -1,7 +1,7 @@
 from unittest import main, TestCase
 from unittest.mock import MagicMock
 from test_helpers import html_senadores_index, MockResponse
-from scraper import fetch_periodos, requests, BeautifulSoup
+from scraper.periodos import fetch_periodos, requests, BeautifulSoup
 
 
 class FetchPeriodos(TestCase):
