@@ -15,9 +15,9 @@ class Bot:
         self.new_leyes = []
 
     def run(self):
-        # self.actualizar_senadores()
+        self.actualizar_senadores()
         self.actualizar_proyectos()
-        # self.actualizar_comisiones()
+        self.actualizar_comisiones()
 
         if len(self.new_leyes) != 0:
             self.actualizar_proyectos_por_comision()

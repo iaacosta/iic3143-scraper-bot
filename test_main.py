@@ -1,7 +1,9 @@
 from datetime import datetime
 from unittest import main, TestCase
 from unittest.mock import MagicMock, ANY
-from main import Bot, db, periodos, senadores, proyectos
+from main import Bot, db, periodos, senadores, proyectos, sleep
+
+sleep = MagicMock(return_value='nada')
 
 
 class TestBot(TestCase):
