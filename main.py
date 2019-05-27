@@ -94,7 +94,7 @@ class Bot:
     def actualizar_proyectos_por_comision(self):
         logger('Hay {0} nuevo{1} proyecto{1}, se requiere verificar de que comisiones son'.format(
             len(self.new_leyes),
-            's' if len(self.new_leyes) else ''
+            's' if len(self.new_leyes) > 1 else ''
         ))
 
         cids = db.select(self.connection, ['id'], 'Comitions')
@@ -125,16 +125,7 @@ class Bot:
             correspondencias += list(
                 map(lambda bol: {'cid': 0, 'boletin': bol}, self.new_leyes))
 
-        boletines = map(lambda rel: rel['boletin'], correspondencias)
-        condition = " WHERE boletin IN ('{}')".format("','".join(boletines))
-        pid_dict = dict(db.select(self.connection, [
-                        'boletin', 'id'], 'Proyectos', condition=condition))
-
-        correspondencias = list(map(lambda rel: {
-            'cid': rel['cid'],
-            'pid': pid_dict[rel['boletin']],
-        }, correspondencias))
-
+        correspondencias = self.get_pids_from_boletines(correspondencias)
         logger('Agregando {} relacion{} a la base de datos'.format(
             len(correspondencias), 'es' if len(correspondencias) > 1 else ''))
 
@@ -173,6 +164,17 @@ class Bot:
     def commit_actualizacion(self):
         db.insert(self.connection, 'Updates', [
             {'"createdAt"': datetime.now()}])
+
+    def get_pids_from_boletines(self, correspondencias):
+        boletines = map(lambda rel: rel['boletin'], correspondencias)
+        condition = " WHERE boletin IN ('{}')".format("','".join(boletines))
+        pid_dict = dict(db.select(self.connection, [
+                        'boletin', 'id'], 'Proyectos', condition=condition))
+
+        return list(map(lambda rel: {
+            'cid': rel['cid'],
+            'pid': pid_dict[rel['boletin']],
+        }, correspondencias))
 
     @staticmethod
     def scrap_ids_senadores():
