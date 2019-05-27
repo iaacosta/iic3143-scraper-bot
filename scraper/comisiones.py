@@ -111,5 +111,4 @@ def fetch_proyectos_in_comision(cid):
         _, boletin, _, _, _, _ = row.find_all('td')
         boletines.append(boletin.text)
 
-    print(boletines)
     return set(boletines)
