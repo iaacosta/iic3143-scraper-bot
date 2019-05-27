@@ -17,13 +17,25 @@ def process_phone_number(phone_number):
         return None
     elif '+5632' in phone_number:
         return phone_number
-    no_code = phone_number.split(
-        '(56-32)')[1] if '(56-32)' in phone_number else phone_number
-    no_code = no_code.split('(56 32)')[1] if '(56 32)' in no_code else no_code
-    if len(no_code.strip()) < 7:
-        return None
-    else:
-        return '+5632{}'.format(no_code.strip())
+
+    no_spaces = phone_number.replace(' ', '')
+
+    if '(56-32)' in no_spaces:
+        no_code = no_spaces.split(
+            '(56-32)')[1] if '(56-32)' in phone_number else phone_number
+        no_code = no_code.split('(56 32)')[
+            1] if '(56 32)' in no_code else no_code
+        if len(no_code.strip()) != 7:
+            return None
+        else:
+            return '+5632{}'.format(no_code.strip())
+    elif no_spaces[:2] == '32':
+        no_spaces = no_spaces.split(
+            '-')[0] if len(no_spaces) > 12 and '-' in no_spaces else no_spaces
+        no_hyphens = no_spaces.replace('-', '')
+        return '+56{}'.format(no_hyphens)
+    elif '(56)32' in no_spaces:
+        return '+56{}'.format(no_spaces[4:])
 
 
 def query_parser(query):
@@ -48,3 +60,21 @@ def parse_name(full_name):
 
 def sql_value_parser(val):
     return str(val) if type(val) == int else "'{}'".format(val)
+
+
+def parse_estado(estado):
+    if ('publicado' in estado.lower()):
+        return 'aprobado'
+
+    parser = {
+        'En tramitación': 'tramitacion',
+        'Archivado': 'suspendido',
+        'Retirado': 'rechazado',
+        'Rechazado': 'rechazado',
+        'Consulta archivo': 'suspendido',
+        'Solicitud archivo': 'suspendido',
+        'Inconstitucional': 'rechazado',
+        'Inadmisible': 'rechazado'
+    }
+
+    return parser[estado]
