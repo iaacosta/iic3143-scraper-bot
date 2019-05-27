@@ -5,7 +5,7 @@ from test_helpers import html_proyectos, html_no_proyectos, html_proyecto, html_
 from scraper.proyectos import fetch_new_proyectos, fetch_resumen, fetch_autores, requests
 
 
-class FetchNewPeriodos(TestCase):
+class FetchNewProyectos(TestCase):
     url = 'http://www.senado.cl/appsenado/index.php?mo=tramitacion&ac=avanzada_resultado&cadena=0~S~1~0~{}~{}~~~0~0~~~~'
 
     def setUp(self):

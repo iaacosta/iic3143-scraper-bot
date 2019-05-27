@@ -83,7 +83,7 @@ def fetch_integrantes(cid):
         query = helpers.query_parser(parl_img_url)
         integrantes_data.append({
             'cid': cid,
-            'sid': query['fid'],
+            'sid': int(query['fid']),
         })
 
     return integrantes_data
@@ -103,12 +103,13 @@ def fetch_proyectos_in_comision(cid):
     boletines = []
 
     radicados, _, informados, _ = soup.find_all('table')
-    for row in radicados.find_all('tr')[1:-1]:
+    for row in radicados.find_all('tr')[1:]:
         _, boletin, _, _, _, _ = row.find_all('td')
         boletines.append(boletin.text)
 
-    for row in informados.find_all('tr')[1:-1]:
+    for row in informados.find_all('tr')[1:]:
         _, boletin, _, _, _, _ = row.find_all('td')
         boletines.append(boletin.text)
 
+    print(boletines)
     return set(boletines)
