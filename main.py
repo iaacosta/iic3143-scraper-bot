@@ -118,10 +118,10 @@ class Bot:
                 self.new_leyes.remove(boletin)
 
             sleep(0.7)
-        else:
+
+        if len(self.new_leyes) > 0:
             logger('Quedaron {} proyectos sin comisión válida. '.format(len(self.new_leyes))
                    + 'Se asume que son de la cámara de diputados')
-
             correspondencias += list(
                 map(lambda bol: {'cid': 0, 'boletin': bol}, self.new_leyes))
 
