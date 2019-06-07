@@ -39,6 +39,7 @@ def fetch_last_legislation():
 
 def fetch_new_asistencias():
     to_fetch = fetch_last_legislation()
+    print(to_fetch)
     fecha_inicio = datetime.strptime(
         to_fetch['fecha_i'], "%d/%m/%Y").strftime('%Y-%d-%m')
     fecha_fin = datetime.strptime(
