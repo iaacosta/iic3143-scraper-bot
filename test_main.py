@@ -1,7 +1,7 @@
 from datetime import datetime
 from unittest import main, TestCase
 from unittest.mock import MagicMock, ANY
-from main import Bot, db, periodos, senadores, proyectos, comisiones, sleep
+from main import Bot, db, periodos, senadores, proyectos, comisiones, sleep, asistencias
 
 sleep = MagicMock(return_value='nada')
 
@@ -12,6 +12,7 @@ class TestBot(TestCase):
         self.bot = Bot()
         self.bot.connection.close = MagicMock()
         db.insert = MagicMock()
+        db.delete = MagicMock()
         db.select = MagicMock(return_value=[905])
         senadores.fetch_ids = MagicMock(return_value=[905])
         senadores.fetch_detail = MagicMock(return_value='senador')
@@ -178,6 +179,55 @@ class TestBot(TestCase):
             {'cid': 905, 'boletin': '0-0'},
             {'cid': 0, 'boletin': '2-0'},
         ])
+
+    def test_should_scrap_asistencias(self):
+        sample_proyectos = [
+            {'lid': 805, 'fecha_inicio': '2019-11-03', 'fecha_fin': '2020-10-03',
+                'sid': 905, 'asistencias': 21, 'inasistencias_just': 0, 'inasistencias_no_just': 2},
+            {'lid': 805, 'fecha_inicio': '2019-11-03', 'fecha_fin': '2020-10-03',
+                'sid': 985, 'asistencias': 16, 'inasistencias_just': 4, 'inasistencias_no_just': 3},
+        ]
+
+        asistencias.fetch_new_asistencias = MagicMock(
+            return_value=sample_proyectos)
+
+        self.bot.actualizar_asistencias()
+
+        db.insert.assert_called_once()
+        db.insert.assert_called_with(
+            self.bot.connection, 'Assistance', sample_proyectos)
+
+    def test_should_delete_existing_asistencias(self):
+        sample_proyectos = [
+            {'lid': 905, 'fecha_inicio': '2019-11-03', 'fecha_fin': '2020-10-03',
+                'sid': 905, 'asistencias': 21, 'inasistencias_just': 0, 'inasistencias_no_just': 2},
+        ]
+
+        asistencias.fetch_new_asistencias = MagicMock(
+            return_value=sample_proyectos)
+
+        self.bot.actualizar_asistencias()
+
+        db.delete.assert_called_once()
+        db.delete.assert_called_with(
+            self.bot.connection, 'Assistance', '(lid=905 AND sid=905)')
+
+    def test_should_delete_existing_asistencias_multiple(self):
+        sample_proyectos = [
+            {'lid': 905, 'fecha_inicio': '2019-11-03', 'fecha_fin': '2020-10-03',
+                'sid': 905, 'asistencias': 21, 'inasistencias_just': 0, 'inasistencias_no_just': 2},
+            {'lid': 905, 'fecha_inicio': '2019-11-03', 'fecha_fin': '2020-10-03',
+                'sid': 985, 'asistencias': 16, 'inasistencias_just': 4, 'inasistencias_no_just': 3},
+        ]
+
+        asistencias.fetch_new_asistencias = MagicMock(
+            return_value=sample_proyectos)
+
+        self.bot.actualizar_asistencias()
+
+        db.delete.assert_called_once()
+        db.delete.assert_called_with(
+            self.bot.connection, 'Assistance', '(lid=905 AND sid=905) OR (lid=905 AND sid=985)')
 
     def test_should_add_autores(self):
         self.bot.agregar_senadores_autores([805])
