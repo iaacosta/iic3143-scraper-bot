@@ -39,7 +39,7 @@ def insert(connection, table_name, items):
 
 def delete(connection, table_name, condition):
     cursor = connection.cursor()
-    query = 'DELETE FROM "{}" WHERE {}'.format(table_name, condition)
+    query = 'DELETE FROM "{}" WHERE {};'.format(table_name, condition)
     cursor.execute(query)
     connection.commit()
     cursor.close()

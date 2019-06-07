@@ -3,7 +3,7 @@ from test_helpers import MockConector, MockCursor
 from unittest import TestCase, main
 from unittest.mock import MagicMock
 from os import environ
-from db import insert, connect, select, psycopg2
+from db import insert, connect, delete, select, psycopg2
 
 psycopg2.connect = MagicMock()
 
@@ -75,6 +75,23 @@ class TestInsert(TestCase):
     def test_should_commit_and_close(self):
         connection = MockConector(test_env)
         insert(connection, 'TestTable', [{'id': 0, 'name': 'Test name 0'}])
+        cursor = connection.cursor.return_value
+        connection.commit.assert_called_once()
+        cursor.close.assert_called_once()
+
+
+class TestDelete(TestCase):
+    def test_with_one_value(self):
+        connection = MockConector(test_env)
+        delete(connection, 'TestTable', 'test condition')
+        cursor = connection.cursor.return_value
+        cursor.execute.assert_called_with(
+            'DELETE FROM "TestTable" WHERE test condition;')
+        cursor.execute.assert_called_once()
+
+    def test_should_commit_and_close(self):
+        connection = MockConector(test_env)
+        delete(connection, 'TestTable', 'test condition')
         cursor = connection.cursor.return_value
         connection.commit.assert_called_once()
         cursor.close.assert_called_once()
