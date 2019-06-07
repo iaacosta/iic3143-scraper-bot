@@ -43,6 +43,7 @@ class TestBot(TestCase):
         self.bot.actualizar_proyectos = MagicMock()
         self.bot.actualizar_comisiones = MagicMock()
         self.bot.actualizar_proyectos_por_comision = MagicMock()
+        self.bot.actualizar_asistencias = MagicMock()
         self.bot.commit_actualizacion = MagicMock()
 
         self.bot.run()
@@ -59,6 +60,7 @@ class TestBot(TestCase):
         self.bot.actualizar_proyectos = MagicMock()
         self.bot.actualizar_comisiones = MagicMock()
         self.bot.actualizar_proyectos_por_comision = MagicMock()
+        self.bot.actualizar_asistencias = MagicMock()
         self.bot.commit_actualizacion = MagicMock()
         self.bot.new_leyes = set([0, 1])
 

@@ -16,12 +16,12 @@ class Bot:
         self.new_leyes = []
 
     def run(self):
-        # self.actualizar_senadores()
-        # self.actualizar_proyectos()
-        # self.actualizar_comisiones()
+        self.actualizar_senadores()
+        self.actualizar_proyectos()
+        self.actualizar_comisiones()
 
-        # if len(self.new_leyes) != 0:
-        #     self.actualizar_proyectos_por_comision()
+        if len(self.new_leyes) != 0:
+            self.actualizar_proyectos_por_comision()
 
         self.actualizar_asistencias()
         self.commit_actualizacion()
@@ -127,6 +127,7 @@ class Bot:
             correspondencias += list(
                 map(lambda bol: {'cid': 0, 'boletin': bol}, self.new_leyes))
 
+        correspondencias.sort(key=lambda c: c['boletin'])
         correspondencias = self.get_pids_from_boletines(correspondencias)
         logger('Agregando {} relacion{} a la base de datos'.format(
             len(correspondencias), 'es' if len(correspondencias) > 1 else ''))
