@@ -141,7 +141,6 @@ class Bot:
         refreshed_data = asistencias.fetch_new_asistencias()
         db_ids = db.select(self.connection, ['lid'], 'Assistance')
 
-        print(refreshed_data, db_ids)
         if refreshed_data[0]['lid'] in db_ids:
             condition = map(lambda d: '(lid={} AND sid={})'.format(
                 d['lid'], d['sid']), refreshed_data)
