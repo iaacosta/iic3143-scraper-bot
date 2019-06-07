@@ -136,7 +136,16 @@ class Bot:
 
     def actualizar_asistencias(self):
         logger('Verificando cambios en asistencias')
-        asistencias.fetch_new_asistencias()
+
+        refreshed_data = asistencias.fetch_new_asistencias()
+        db_ids = db.select(self.connection, ['lid'], 'Assistance')
+
+        if refreshed_data[0]['lid'] in db_ids:
+            condition = map(lambda d: '(lid={} AND sid={})'.format(
+                d['lid'], d['sid']), refreshed_data)
+            db.delete(self.connection, 'Assistance', ' OR '.join(condition))
+
+        db.insert(self.connection, 'Assistance', refreshed_data)
 
     def agregar_periodos(self, ids):
         logger('Recolectando información de los periodos')

@@ -35,3 +35,11 @@ def insert(connection, table_name, items):
     cursor.execute('{} {};'.format(query, ', '.join(values)))
     connection.commit()
     cursor.close()
+
+
+def delete(connection, table_name, condition):
+    cursor = connection.cursor()
+    query = 'DELETE FROM "{}" WHERE {}'.format(table_name, condition)
+    cursor.execute(query)
+    connection.commit()
+    cursor.close()
