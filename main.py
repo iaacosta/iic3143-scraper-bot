@@ -3,6 +3,7 @@ import scraper.senadores as senadores
 import scraper.periodos as periodos
 import scraper.proyectos as proyectos
 import scraper.comisiones as comisiones
+import scraper.asistencias as asistencias
 from functools import reduce
 from helpers import logger
 from time import sleep
@@ -15,13 +16,14 @@ class Bot:
         self.new_leyes = []
 
     def run(self):
-        self.actualizar_senadores()
-        self.actualizar_proyectos()
-        self.actualizar_comisiones()
+        # self.actualizar_senadores()
+        # self.actualizar_proyectos()
+        # self.actualizar_comisiones()
 
-        if len(self.new_leyes) != 0:
-            self.actualizar_proyectos_por_comision()
+        # if len(self.new_leyes) != 0:
+        #     self.actualizar_proyectos_por_comision()
 
+        self.actualizar_asistencias()
         self.commit_actualizacion()
         self.connection.close()
 
@@ -131,6 +133,10 @@ class Bot:
 
         db.insert(self.connection, 'ProjectComitions', correspondencias)
         logger('Proyectos agregados a la base de datos')
+
+    def actualizar_asistencias(self):
+        logger('Verificando cambios en asistencias')
+        asistencias.fetch_new_asistencias()
 
     def agregar_periodos(self, ids):
         logger('Recolectando información de los periodos')
