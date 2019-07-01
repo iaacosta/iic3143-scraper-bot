@@ -15,6 +15,7 @@ class Bot:
     def __init__(self, custom_from_date=None):
         self.connection = db.connect()
         self.new_leyes = []
+        self.updated_senators = set()
         self.custom_form_date = custom_from_date
 
     def run(self):
@@ -26,6 +27,7 @@ class Bot:
             self.actualizar_proyectos_por_comision()
 
         self.actualizar_asistencias()
+        self.trigger_mailers()
         self.commit_actualizacion()
         self.connection.close()
 
@@ -40,6 +42,7 @@ class Bot:
             logger('No hay cambios')
             return
 
+        self.updated_senators.update(diff)
         logger('Cambios detectados, scrapeando nueva información')
         nuevos = self.scrap_new_senadores(diff)
         logger('Agregando {} senador{} a la base de datos'.format(
@@ -170,10 +173,8 @@ class Bot:
             len(autores), 'es' if len(autores) > 1 else ''))
         db.insert(self.connection, 'SenadorProyectos', autores)
 
-        logger('Gatillando envío a los suscriptores')
-        for sid in set(map(lambda rel: rel['sid'], autores)):
-            logger('\tsid={}'.format(sid))
-            trigger_mailer_senator(sid)
+        new_sids = set(map(lambda rel: rel['sid'], autores))
+        self.updated_senators.update(new_sids)
 
     def agregar_integrantes(self, cids):
         logger('Scrapeando integrantes de nuevas comisiones')
@@ -187,6 +188,7 @@ class Bot:
         db.insert(self.connection, 'SenatorComitions', integrantes)
 
     def commit_actualizacion(self):
+        logger('Comiteando update a la base de datos')
         db.insert(self.connection, 'Updates', [
             {'"createdAt"': datetime.now()}])
 
@@ -200,6 +202,16 @@ class Bot:
             'cid': rel['cid'],
             'pid': pid_dict[rel['boletin']],
         }, correspondencias))
+
+    def trigger_mailers(self):
+        if len(self.updated_senators) == 0:
+            return
+
+        logger('Gatillando envíos de updates a suscriptores')
+
+        for sid in self.updated_senators:
+            logger('\tsid={}'.format(sid))
+            trigger_mailer_senator(sid)
 
     @staticmethod
     def scrap_ids_senadores():
