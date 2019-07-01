@@ -5,15 +5,17 @@ import scraper.proyectos as proyectos
 import scraper.comisiones as comisiones
 import scraper.asistencias as asistencias
 from functools import reduce
-from helpers import logger
+from helpers import logger, trigger_mailer_senator
 from time import sleep
 from datetime import datetime
+from sys import argv
 
 
 class Bot:
-    def __init__(self):
+    def __init__(self, custom_from_date=None):
         self.connection = db.connect()
         self.new_leyes = []
+        self.custom_form_date = custom_from_date
 
     def run(self):
         self.actualizar_senadores()
@@ -49,7 +51,7 @@ class Bot:
     def actualizar_proyectos(self):
         logger('Verificando cambios en proyectos de ley')
 
-        web_data = proyectos.fetch_new_proyectos()
+        web_data = proyectos.fetch_new_proyectos(self.custom_form_date)
         db_ids = set(db.select(self.connection, ['boletin'], 'Proyectos'))
         web_ids = set(map(lambda proy: proy['boletin'], web_data))
 
@@ -168,6 +170,11 @@ class Bot:
             len(autores), 'es' if len(autores) > 1 else ''))
         db.insert(self.connection, 'SenadorProyectos', autores)
 
+        logger('Gatillando envío a los suscriptores')
+        for sid in set(map(lambda rel: rel['sid'], autores)):
+            logger('\tsid={}'.format(sid))
+            trigger_mailer_senator(sid)
+
     def agregar_integrantes(self, cids):
         logger('Scrapeando integrantes de nuevas comisiones')
         integrantes = []
@@ -230,5 +237,9 @@ class Bot:
 
 
 if __name__ == '__main__':
-    bot = Bot()
+    if len(argv) > 1:
+        bot = Bot(argv[2])
+    else:
+        bot = Bot()
+
     bot.run()

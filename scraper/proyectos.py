@@ -10,7 +10,7 @@ BASE = 'http://www.senado.cl'
 PATH = 'appsenado/index.php'
 
 
-def fetch_new_proyectos():
+def fetch_new_proyectos(custom_last_date):
     today = datetime.now().date()
     yesterday = (datetime.now() - timedelta(days=1)).date()
 
@@ -18,7 +18,8 @@ def fetch_new_proyectos():
         'mo': 'tramitacion',
         'ac': 'avanzada_resultado',
         'cadena': '0~S~1~0~{}~{}~~~0~0~~~~'.format(
-            yesterday.strftime('%d/%m/%Y'),
+            yesterday.strftime(
+                '%d/%m/%Y') if custom_last_date is None else custom_last_date,
             today.strftime('%d/%m/%Y'),
         )
     }
