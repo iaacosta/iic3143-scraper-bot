@@ -142,11 +142,13 @@ class Bot:
         db_ids = db.select(self.connection, ['lid'], 'Assistance')
 
         if refreshed_data[0]['lid'] in db_ids:
+            logger('Legislación ya existe, borrando los datos anteriores')
             condition = map(lambda d: '(lid={} AND sid={})'.format(
                 d['lid'], d['sid']), refreshed_data)
             db.delete(self.connection, 'Assistance', ' OR '.join(condition))
 
         db.insert(self.connection, 'Assistance', refreshed_data)
+        logger('Asistencias agregadas a la base de datos')
 
     def agregar_periodos(self, ids):
         logger('Recolectando información de los periodos')
